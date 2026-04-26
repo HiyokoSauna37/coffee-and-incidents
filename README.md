@@ -24,3 +24,7 @@ SOCアナリスト「ひよっこサウナ」のセキュリティブログ。
 bundle install
 bundle exec jekyll serve
 ```
+
+## Credits
+
+- Favicon (coffee cup): <a href="https://www.flaticon.com/free-icons/coffee-cup" title="coffee cup icons">Coffee cup icons created by Freepik - Flaticon</a>
