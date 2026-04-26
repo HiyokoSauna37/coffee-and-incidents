@@ -1,0 +1,48 @@
+---
+layout: default
+---
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {%- assign date_format = site.minima.date_format | default: "%Y-%m-%d" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.categories.size > 0 -%}
+        &middot; <span class="post-categories">{{ page.categories | join: " / " }}</span>
+      {%- endif -%}
+    </p>
+  </header>
+
+  <div class="author-card" style="display: flex; align-items: center; gap: 1em; padding: 0.8em 1em; background: rgba(245, 197, 24, 0.08); border-left: 3px solid #f5c518; border-radius: 4px; margin: 1.5em 0 2em 0;">
+    <img src="{{ '/assets/images/avatar.jpg' | relative_url }}" alt="ひよっこサウナ" width="56" height="56" style="border-radius: 50%; flex-shrink: 0; border: 2px solid #f5c518;" />
+    <div style="line-height: 1.4;">
+      <div style="font-weight: bold; font-size: 1.05em;">ひよっこサウナ</div>
+      <div style="font-size: 0.85em; color: #888;">SOC analyst / バグバウンティ・デジタルフォレンジックに興味あり</div>
+    </div>
+  </div>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <hr style="margin-top: 3em; opacity: 0.3;" />
+
+  <div class="post-signoff" style="text-align: center; margin: 2em 0; color: #888;">
+    <img src="{{ '/assets/images/favicon.png' | relative_url }}" alt="" width="40" height="40" style="opacity: 0.7; vertical-align: middle;" />
+    <p style="margin: 0.5em 0 0 0; font-size: 0.9em;">
+      <em>コーヒーが冷めたら、また来てください。</em>
+    </p>
+    <p style="margin: 0.3em 0 0 0; font-size: 0.85em;">
+      ―― ひよっこサウナ
+    </p>
+  </div>
+
+  {%- if site.disqus.shortname -%}
+    {%- include disqus_comments.html -%}
+  {%- endif -%}
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
