@@ -1,26 +1,583 @@
 ---
 layout: default
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {%- assign date_format = site.minima.date_format | default: "%Y-%m-%d" -%}
-        {{ page.date | date: date_format }}
-      </time>
-      {%- if page.categories.size > 0 -%}
-        &middot; <span class="post-categories">{{ page.categories | join: " / " }}</span>
-      {%- endif -%}
-    </p>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Zen+Old+Mincho:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+.post-page {
+  --bg: #0e0a06;
+  --bg-soft: #14100a;
+  --bg-elev: #1c1610;
+  --bg-code: #0a0805;
+  --ink: #ece2cc;
+  --ink-soft: #c4b89c;
+  --ink-mute: #8a7d65;
+  --ink-faint: #4d4232;
+  --accent: #f5c518;
+  --accent-warm: #e9b450;
+  --accent-deep: #6B3410;
+  --crema: #c49b6c;
+  --line: rgba(236, 226, 204, 0.12);
+  --line-strong: rgba(236, 226, 204, 0.25);
+
+  --font-display: 'Fraunces', 'Zen Old Mincho', serif;
+  --font-jp: 'Zen Old Mincho', 'YuMincho', 'Hiragino Mincho ProN', serif;
+  --font-mono: 'JetBrains Mono', 'Menlo', monospace;
+
+  font-family: var(--font-jp);
+  color: var(--ink);
+  line-height: 1.95;
+  letter-spacing: 0.015em;
+  position: relative;
+}
+
+.post-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 18% 8%, rgba(245, 197, 24, 0.06), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 88% 95%, rgba(107, 52, 16, 0.18), transparent 70%),
+    #0e0a06;
+  z-index: -2;
+  pointer-events: none;
+}
+.post-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0 0.7  0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* MASTHEAD ========================================== */
+.post-page__masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 0 1.6rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 3rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+.post-page__back {
+  color: var(--ink-mute);
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.post-page__back:hover {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+.post-page__cats { color: var(--accent); }
+
+/* HEADER ============================================ */
+.post-page__header {
+  margin: 1rem 0 2.5rem;
+}
+.post-page__date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  margin-bottom: 1.4em;
+}
+.post-page__date::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-right: 0.9em;
+}
+.post-page__title {
+  font-family: var(--font-display), var(--font-jp);
+  font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0;
+  letter-spacing: 0.005em;
+  max-width: 24em;
+}
+
+/* AUTHOR CARD ======================================= */
+.post-page__author {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  padding: 1em 1.4em;
+  background: rgba(245, 197, 24, 0.05);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 4px 4px 0;
+  margin: 0 0 3.5rem;
+}
+.post-page__author img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.post-page__author-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.post-page__author-role {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  margin-top: 0.4em;
+}
+
+/* CONTENT TYPOGRAPHY ================================ */
+.post-content {
+  font-size: 1.02rem;
+  line-height: 2;
+  color: var(--ink-soft);
+  font-feature-settings: "palt";
+  max-width: 42em;
+}
+.post-content > * { margin: 0 0 1.5em; }
+.post-content > *:last-child { margin-bottom: 0; }
+.post-content p { margin: 0 0 1.5em; }
+
+.post-content strong, .post-content b {
+  color: var(--ink);
+  font-weight: 700;
+}
+.post-content em, .post-content i {
+  color: var(--ink);
+  font-style: italic;
+}
+.post-content del { color: var(--ink-faint); }
+
+/* Headings ----------------------------------------- */
+.post-content h1, .post-content h2, .post-content h3,
+.post-content h4, .post-content h5, .post-content h6 {
+  font-family: var(--font-display), var(--font-jp);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.005em;
+  line-height: 1.45;
+}
+.post-content h2 {
+  font-size: 1.6rem;
+  margin: 3.2rem 0 1.4rem;
+  padding-bottom: 0.55em;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.post-content h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 64px;
+  height: 1px;
+  background: var(--accent);
+}
+.post-content h3 {
+  font-size: 1.3rem;
+  margin: 2.5rem 0 1rem;
+  color: var(--accent-warm);
+}
+.post-content h4 {
+  font-size: 1.08rem;
+  font-style: italic;
+  margin: 2rem 0 0.8rem;
+  color: var(--ink);
+}
+.post-content h5, .post-content h6 {
+  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 1.6rem 0 0.6rem;
+}
+
+/* Links -------------------------------------------- */
+.post-content a {
+  color: var(--accent-warm);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 197, 24, 0.32);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.post-content a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Inline code -------------------------------------- */
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--bg-code);
+  color: var(--accent-warm);
+  padding: 0.18em 0.5em;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  letter-spacing: 0;
+  word-break: break-word;
+}
+
+/* Code blocks -------------------------------------- */
+.post-content pre {
+  background: var(--bg-code);
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 1.2em 1.4em;
+  overflow-x: auto;
+  margin: 1.8em 0;
+  line-height: 1.65;
+}
+.post-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ink);
+  font-size: 0.85em;
+  letter-spacing: 0;
+}
+.post-content .highlight { margin: 1.8em 0; }
+.post-content .highlight pre { margin: 0; }
+
+/* Blockquote (regular) ----------------------------- */
+.post-content blockquote {
+  margin: 1.8em 0;
+  padding: 0.4em 0 0.4em 1.6em;
+  border-left: 2px solid var(--line-strong);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.post-content blockquote p { margin: 0 0 0.8em; }
+.post-content blockquote > *:last-child { margin-bottom: 0; }
+
+/* Lists -------------------------------------------- */
+.post-content ul, .post-content ol {
+  margin: 1.2em 0;
+  padding-left: 1.5em;
+}
+.post-content li {
+  margin: 0.45em 0;
+  line-height: 1.9;
+}
+.post-content li > p { margin: 0 0 0.4em; }
+.post-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+.post-content ul > li {
+  position: relative;
+  padding-left: 1.5em;
+}
+.post-content ul > li::before {
+  content: '◇';
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+  color: var(--accent);
+  font-size: 0.7em;
+  line-height: 1;
+}
+.post-content ol { list-style: none; counter-reset: ol-counter; padding-left: 0; }
+.post-content ol > li {
+  counter-increment: ol-counter;
+  padding-left: 2.2em;
+  position: relative;
+}
+.post-content ol > li::before {
+  content: counter(ol-counter, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  line-height: 2.4;
+}
+.post-content ul ul, .post-content ol ol,
+.post-content ul ol, .post-content ol ul { margin: 0.4em 0; }
+
+/* HR ----------------------------------------------- */
+.post-content hr {
+  border: none;
+  border-top: 1px dashed var(--line-strong);
+  margin: 3rem 0;
+  position: relative;
+  height: 1px;
+}
+.post-content hr::after {
+  content: '◇';
+  position: absolute;
+  top: -0.7em;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0e0a06;
+  padding: 0 0.9em;
+  color: var(--accent);
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* Tables ------------------------------------------- */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.8em 0;
+  font-size: 0.94rem;
+}
+.post-content th, .post-content td {
+  padding: 0.75em 0.95em;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.post-content thead th {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--accent);
+}
+.post-content tbody tr:hover { background: rgba(245, 197, 24, 0.025); }
+
+/* Images ------------------------------------------- */
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 1.8em 0;
+  border: 1px solid var(--line);
+}
+
+/* Footnotes ---------------------------------------- */
+.post-content sup,
+.post-content .footnote {
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+}
+.post-content sup a,
+.post-content .footnote {
+  color: var(--accent-warm);
+  border-bottom: none;
+  padding: 0 0.15em;
+}
+.post-content sup a:hover { color: var(--accent); }
+.post-content .footnotes {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: var(--ink-mute);
+  line-height: 1.85;
+}
+.post-content .footnotes ol {
+  padding-left: 0;
+  counter-reset: fn;
+}
+.post-content .footnotes ol > li {
+  padding-left: 2.4em;
+  counter-increment: fn;
+  margin: 0.6em 0;
+}
+.post-content .footnotes ol > li::before {
+  content: counter(fn, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.post-content .footnotes p { margin: 0 0 0.4em; }
+.post-content .footnotes a.reversefootnote {
+  margin-left: 0.4em;
+  color: var(--ink-faint);
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* GitHub-style Alerts ============================== */
+.post-content blockquote.post-alert {
+  margin: 2em 0;
+  padding: 1.3em 1.6em 1.1em;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--ink-mute);
+  background: rgba(245, 197, 24, 0.025);
+  font-style: normal;
+  color: var(--ink-soft);
+}
+.post-content blockquote.post-alert > p { margin: 0 0 0.7em; }
+.post-content blockquote.post-alert > p:last-child,
+.post-content blockquote.post-alert > ul:last-child,
+.post-content blockquote.post-alert > ol:last-child {
+  margin-bottom: 0;
+}
+.post-content blockquote.post-alert ul,
+.post-content blockquote.post-alert ol {
+  margin: 0.7em 0;
+}
+.post-alert__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.4em;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 0 1em;
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  color: var(--ink-mute);
+}
+.post-alert__label::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.post-alert--note { border-left-color: var(--crema); background: rgba(196, 155, 108, 0.04); }
+.post-alert--note .post-alert__label { color: var(--crema); }
+
+.post-alert--important { border-left-color: var(--accent); background: rgba(245, 197, 24, 0.05); }
+.post-alert--important .post-alert__label { color: var(--accent); }
+
+.post-alert--tip { border-left-color: #9bc77a; background: rgba(155, 199, 122, 0.04); }
+.post-alert--tip .post-alert__label { color: #9bc77a; }
+
+.post-alert--warning { border-left-color: #e89c47; background: rgba(232, 156, 71, 0.04); }
+.post-alert--warning .post-alert__label { color: #e89c47; }
+
+.post-alert--caution { border-left-color: #d63e2a; background: rgba(214, 62, 42, 0.04); }
+.post-alert--caution .post-alert__label { color: #d63e2a; }
+
+/* SIGNOFF =========================================== */
+.post-page__signoff {
+  text-align: center;
+  margin: 5rem auto 2.5rem;
+  padding-top: 3rem;
+  border-top: 1px dashed var(--line);
+  max-width: 42em;
+}
+.post-page__signoff img {
+  width: 38px;
+  height: 38px;
+  opacity: 0.5;
+}
+.post-page__signoff-quote {
+  font-family: var(--font-jp);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink-mute);
+  margin: 1em 0 0.6em;
+  letter-spacing: 0.04em;
+}
+.post-page__signoff-author {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.36em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin: 0;
+}
+.post-page__signoff-author::before { content: '— '; color: var(--accent); }
+
+/* BOTTOM NAV ======================================== */
+.post-page__nav {
+  margin: 0 0 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.post-page__nav a {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.36em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+}
+.post-page__nav a:hover {
+  color: var(--accent);
+  transform: translateX(-3px);
+}
+
+/* MOBILE ============================================ */
+@media (max-width: 800px) {
+  .post-page__masthead { font-size: 0.62rem; padding: 1rem 0 1.2rem; margin-bottom: 2rem; }
+  .post-page__title { font-size: 1.5rem; }
+  .post-page__author { padding: 0.8em 1em; gap: 0.9em; }
+  .post-page__author img { width: 48px; height: 48px; }
+  .post-content { font-size: 0.96rem; line-height: 1.95; }
+  .post-content h2 { font-size: 1.3rem; margin-top: 2.4rem; }
+  .post-content h3 { font-size: 1.12rem; }
+  .post-content pre { padding: 1em 1.1em; font-size: 0.92em; }
+  .post-content blockquote.post-alert { padding: 1.1em 1.2em 0.9em; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .post-page *, .post-page *::before, .post-page *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+</style>
+
+<article class="post-page" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="post-page__masthead">
+    <a class="post-page__back" href="{{ '/' | relative_url }}">← Latest Dispatches</a>
+    {%- if page.categories.size > 0 -%}
+    <div class="post-page__cats">{{ page.categories | join: " · " }}</div>
+    {%- endif -%}
+  </div>
+
+  <header class="post-page__header">
+    <time class="post-page__date dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+      {{ page.date | date: "%Y.%m.%d" }}
+    </time>
+    <h1 class="post-page__title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
   </header>
 
-  <div class="author-card" style="display: flex; align-items: center; gap: 1em; padding: 0.8em 1em; background: rgba(245, 197, 24, 0.08); border-left: 3px solid #f5c518; border-radius: 4px; margin: 1.5em 0 2em 0;">
-    <img src="{{ '/assets/images/avatar.jpg' | relative_url }}" alt="ひよっこサウナ" width="56" height="56" style="border-radius: 50%; flex-shrink: 0; border: 2px solid #f5c518;" />
-    <div style="line-height: 1.4;">
-      <div style="font-weight: bold; font-size: 1.05em;">ひよっこサウナ</div>
-      <div style="font-size: 0.85em; color: #888;">SOC analyst / バグバウンティ・デジタルフォレンジックに興味あり</div>
+  <div class="post-page__author">
+    <img src="{{ '/assets/images/avatar.jpg' | relative_url }}" alt="ひよっこサウナ" />
+    <div>
+      <div class="post-page__author-name">ひよっこサウナ</div>
+      <div class="post-page__author-role">SOC Analyst · Bug Bounty &amp; DFIR</div>
     </div>
   </div>
 
@@ -28,21 +585,38 @@ layout: default
     {{ content }}
   </div>
 
-  <hr style="margin-top: 3em; opacity: 0.3;" />
+  <footer class="post-page__signoff">
+    <img src="{{ '/assets/images/logo-icon.svg' | relative_url }}" alt="" />
+    <p class="post-page__signoff-quote"><em>コーヒーが冷めたら、また来てください。</em></p>
+    <p class="post-page__signoff-author">ひよっこサウナ</p>
+  </footer>
 
-  <div class="post-signoff" style="text-align: center; margin: 2em 0; color: #888;">
-    <img src="{{ '/assets/images/logo-icon.svg' | relative_url }}" alt="" width="44" height="44" style="opacity: 0.8; vertical-align: middle;" />
-    <p style="margin: 0.5em 0 0 0; font-size: 0.9em;">
-      <em>コーヒーが冷めたら、また来てください。</em>
-    </p>
-    <p style="margin: 0.3em 0 0 0; font-size: 0.85em;">
-      ―― ひよっこサウナ
-    </p>
-  </div>
-
-  {%- if site.disqus.shortname -%}
-    {%- include disqus_comments.html -%}
-  {%- endif -%}
+  <nav class="post-page__nav">
+    <a href="{{ '/' | relative_url }}">← Back to Latest Dispatches</a>
+  </nav>
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>
+
+<script>
+(function() {
+  document.querySelectorAll('.post-content blockquote').forEach(function(bq) {
+    var firstP = bq.querySelector('p');
+    if (!firstP) return;
+    var html = firstP.innerHTML;
+    var m = html.match(/^\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
+    if (!m) return;
+    var type = m[1].toUpperCase();
+    bq.classList.add('post-alert', 'post-alert--' + type.toLowerCase());
+
+    firstP.innerHTML = html.replace(/^\s*\[!\w+\]\s*(<br\s*\/?>\s*)?/i, '');
+
+    var label = document.createElement('div');
+    label.className = 'post-alert__label';
+    label.textContent = type;
+    bq.insertBefore(label, bq.firstChild);
+
+    if (firstP.innerHTML.trim() === '') firstP.remove();
+  });
+})();
+</script>
