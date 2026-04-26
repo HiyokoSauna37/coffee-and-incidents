@@ -1,0 +1,39 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coffee and Incidents">
+  <title>Coffee and Incidents</title>
+  <desc>Coffee and Incidents — security stories, before your coffee gets cold.</desc>
+  <defs>
+    <style>
+      .word { font-family: Georgia, "Times New Roman", serif; font-weight: 500; fill: #1a1a1a; }
+      .tagline { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 400; fill: #5a5a5a; }
+      .cup { fill: #6B3410; }
+      .cup-handle { fill: none; stroke: #6B3410; stroke-width: 7; stroke-linecap: round; }
+      .cup-coffee { fill: #2A1408; }
+      .saucer { fill: #8C5631; }
+      .steam { fill: none; stroke: #B8AC9F; stroke-width: 3; stroke-linecap: round; opacity: 0.7; }
+      .alert-dot { fill: #D63E2A; }
+      @media (prefers-color-scheme: dark) {
+        .word { fill: #f0e6d8; }
+        .tagline { fill: #b8b0a4; }
+        .cup { fill: #C18A55; }
+        .cup-handle { stroke: #C18A55; }
+        .cup-coffee { fill: #1A0E04; }
+        .saucer { fill: #D9A678; }
+        .steam { stroke: #D4C8B8; opacity: 0.65; }
+      }
+    </style>
+  </defs>
+  <g transform="translate(145, 20)">
+    <path class="steam" d="M30 60 Q23 45, 30 30 Q37 15, 30 8"/>
+    <path class="steam" d="M55 64 Q62 49, 55 32 Q48 15, 55 2"/>
+    <path class="steam" d="M80 58 Q73 45, 80 33 Q87 20, 80 12"/>
+    <path class="cup" d="M14 70 L96 70 L92 140 Q91 150, 81 150 L29 150 Q19 150, 18 140 Z"/>
+    <ellipse class="cup" cx="55" cy="70" rx="42" ry="7"/>
+    <ellipse class="cup-coffee" cx="55" cy="70" rx="36" ry="5"/>
+    <path class="cup-handle" d="M97 90 Q123 90, 123 112 Q123 134, 97 134"/>
+    <ellipse class="saucer" cx="55" cy="158" rx="68" ry="5"/>
+    <circle class="alert-dot" cx="55" cy="2" r="3"/>
+  </g>
+  <text x="200" y="230" class="word" font-size="32" text-anchor="middle">Coffee and Incidents</text>
+  <line x1="170" y1="245" x2="230" y2="245" stroke="#D63E2A" stroke-width="1.5"/>
+  <text x="200" y="267" class="tagline" font-size="12" text-anchor="middle">Security stories, before your coffee gets cold</text>
+</svg>
