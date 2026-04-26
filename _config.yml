@@ -13,6 +13,9 @@ minima:
   social_links:
     - { platform: github, user_url: "https://github.com/HiyokoSauna37" }
 
+# Suppress auto-generated nav links (logo only in header)
+header_pages: []
+
 # Jekyll core
 markdown: kramdown
 permalink: /:year/:month/:day/:title/
