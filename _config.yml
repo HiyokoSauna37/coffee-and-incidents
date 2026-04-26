@@ -1,0 +1,41 @@
+title: Coffee and Incidents
+description: SOCアナリスト「ひよっこサウナ」の、バグバウンティとデジタルフォレンジックのメモ。watchTowr Labs スタイルで書きます。コーヒーを片手にどうぞ。
+author: ひよっこサウナ (HiyokoSauna)
+lang: ja
+
+# https://pages.github.com/themes/
+theme: minima
+
+# minima settings
+minima:
+  skin: dark
+  date_format: "%Y-%m-%d"
+  social_links:
+    - { platform: github, user_url: "https://github.com/HiyokoSauna37" }
+
+# Jekyll core
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+timezone: Asia/Tokyo
+
+# Build settings
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .gitignore
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: false
