@@ -27,6 +27,10 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+# Google Analytics 4 (GA4)
+# 測定ID（G-XXXXXXXXXX）を取得したら下行のコメントを外して値を入れる
+# google_analytics: G-XXXXXXXXXX
+
 # Exclude from processing
 exclude:
   - README.md
